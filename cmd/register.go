@@ -2,10 +2,13 @@ package main
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/event-booking/internal/model"
+	"github.com/event-booking/internal/utils"
 	"github.com/go-chi/chi"
 )
 
@@ -43,4 +46,108 @@ func (app *application) RegisterForEvent(w http.ResponseWriter, r *http.Request)
 		"message": "Registered!",
 	})
 
+}
+
+func (app *application) SignUp(w http.ResponseWriter, r *http.Request) {
+	var user model.User
+	err := json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, `{"error": "Invalid request body"}`, http.StatusBadRequest)
+		return
+	}
+
+	err = app.store.Users.SaveUser(&user)
+	if err != nil {
+		http.Error(w, `{"message": "Could not save user."}`, http.StatusInternalServerError)
+		return
+	}
+	// w.WriteHeader(http.StatusCreated)
+	// json.NewEncoder(w).Encode(map[string]string{
+	// 	"message": "User created successfully",
+	// })
+	JsonResponse(w, http.StatusCreated, "User created successfully", nil)
+}
+
+
+func (app *application) Login(w http.ResponseWriter, r *http.Request) {
+	var user model.User
+	err := json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, `{"error": "Invalid request body"}`, http.StatusBadRequest)
+		return
+	}
+	
+	err = app.store.Users.ValidateCredentials(&user)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, `{"error": "Could not authenticate user."}`, http.StatusUnauthorized)
+		return
+	}
+
+	token, err := utils.GenerateToken(user.Email, user.ID)
+	if err != nil {
+		http.Error(w, `{"message": "Could not authenticate user."}`, http.StatusInternalServerError)
+		return
+	}
+	JsonResponse(w, http.StatusOK, "Login successfully", token)
+
+}
+
+
+// func (app *application) CancelRegistration(w http.ResponseWriter, r *http.Request) {
+// 	userID, ok := r.Context().Value("userId").(int64)
+// 	if !ok {
+// 		http.Error(w, `{"message": "Unauthorized: invalid user ID."}`, http.StatusUnauthorized)
+// 		return
+// 	}
+
+// 	eventIDStr := chi.URLParam(r, "id")
+// 	eventID, err := strconv.ParseInt(eventIDStr, 10, 64)
+// 	if err != nil {
+// 		http.Error(w, `{"message": "Could not parse event ID."}`, http.StatusBadRequest)
+// 		return
+// 	}
+
+// 	var event model.Event
+// 	event.ID = eventID
+
+// 	var user model.User
+// 	err = json.NewDecoder(r.Body).Decode(&user)
+// 	err = app.store.Users.CancelRegistration(user, userID)
+
+// 	if err != nil {
+// 		http.Error(w, `{"message": "Could not authenticate user."}`, http.StatusInternalServerError)
+// 		return
+// 	}
+// 	JsonResponse(w, http.StatusOK, "Cancelled", nil)
+
+// }
+
+func (app *application) CancelRegistration(w http.ResponseWriter, r *http.Request) {
+	userID, ok := r.Context().Value("userId").(int64)
+	if !ok {
+		http.Error(w, `{"message": "Unauthorized: invalid user ID."}`, http.StatusUnauthorized)
+		return
+	}
+
+	eventIDStr := chi.URLParam(r, "id")
+	eventID, err := strconv.ParseInt(eventIDStr, 10, 64)
+	if err != nil {
+		http.Error(w, `{"message": "Could not parse event ID."}`, http.StatusBadRequest)
+		return
+	}
+
+	err = app.store.Users.CancelRegistration(userID, eventID)
+	if err != nil {
+		if strings.Contains(err.Error(), "no registration found") {
+			http.Error(w, `{"message": "No registration found."}`, http.StatusNotFound)
+		} else {
+			http.Error(w, `{"message": "Could not cancel registration."}`, http.StatusInternalServerError)
+		}
+		return
+	}
+
+	JsonResponse(w, http.StatusOK, "Cancelled", nil)
 }

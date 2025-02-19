@@ -174,6 +174,3 @@ func (app *application) deleteEvent (w http.ResponseWriter, r *http.Request) {
 	}
 	JsonResponse(w, http.StatusOK, "The Event deleted successfully", event)
 }
-
-
-

@@ -17,7 +17,8 @@ type Storage struct {
 	Users interface {
 		SaveUser(user *model.User) error
 		Register(user *model.User, userId int64) error 
-		CancelRegistration(user *model.User, userId int64) error
+		CancelRegistration(userID, eventID int64) error
+		ValidateCredentials(user *model.User) error
 	}
 }
 

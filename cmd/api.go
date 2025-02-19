@@ -43,9 +43,20 @@ func (app *application) mount() http.Handler {
 	r.Route("/event", func(r chi.Router) {
 		r.Get("/", app.getEvents)
 		r.Get("/{id}", app.getEvent)
+	})
+
+	r.Route("/event", func(r chi.Router) {
+		r.Use(Authenticate)
 		r.Post("/", app.createEvent)
 		r.Put("/{id}", app.updateEvent)
 		r.Delete("/{id}", app.deleteEvent)
+		r.Post("/{id}/register", app.RegisterForEvent)
+		r.Delete("/{id}/register", app.CancelRegistration)
+	})
+
+	r.Route("/", func(r chi.Router) {
+		r.Post("/signup", app.SignUp)
+		r.Post("/login", app.Login)
 	})
 	
 

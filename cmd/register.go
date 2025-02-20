@@ -12,6 +12,11 @@ import (
 	"github.com/go-chi/chi"
 )
 
+type APIResponseData struct {
+	Status  int         `json:"status"`
+	Message string      `json:"message"`
+	Token    interface{} `json:"token,omitempty"`
+}
 
 func (app *application) RegisterForEvent(w http.ResponseWriter, r *http.Request) {
 
@@ -62,10 +67,6 @@ func (app *application) SignUp(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, `{"message": "Could not save user."}`, http.StatusInternalServerError)
 		return
 	}
-	// w.WriteHeader(http.StatusCreated)
-	// json.NewEncoder(w).Encode(map[string]string{
-	// 	"message": "User created successfully",
-	// })
 	JsonResponse(w, http.StatusCreated, "User created successfully", nil)
 }
 
@@ -91,7 +92,14 @@ func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, `{"message": "Could not authenticate user."}`, http.StatusInternalServerError)
 		return
 	}
-	JsonResponse(w, http.StatusOK, "Login successfully", token)
+	// JsonResponse(w, http.StatusOK, "Login successfully", token)
+	w.Header().Set("Content-Type", "Application/Json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(APIResponseData{
+		Status:  http.StatusOK,
+		Message: "Login successfully",
+		Token:    token,
+	})
 
 }
 

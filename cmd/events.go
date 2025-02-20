@@ -2,7 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	// "fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -22,9 +22,6 @@ func HealthHandler(w http.ResponseWriter, r *http.Request) {
 		Version: "1.0.0",
 	}
 
-	// w.Header().Set("Content-Type", "application/json")
-	// w.WriteHeader(http.StatusOK)
-
 	if err := json.NewEncoder(w).Encode(payload); err != nil {
 		log.Println("Error encoding JSON:", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
@@ -40,14 +37,7 @@ func (app *application) getEvents(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result, err := json.Marshal(events)
-	if err != nil {
-		log.Println(err)
-	}
-
-	fmt.Println("What is", result)
-
-	JsonResponse(w, http.StatusOK, "Events retrieved successfully", result)
+	JsonResponse(w, http.StatusOK, "Events retrieved successfully", events)
 }
 
 func (app *application) getEvent(w http.ResponseWriter, r *http.Request) {
@@ -71,16 +61,15 @@ func (app *application) getEvent(w http.ResponseWriter, r *http.Request) {
 func (app *application) createEvent(w http.ResponseWriter, r *http.Request) {
 	var event model.Event
 	err := json.NewDecoder(r.Body).Decode(&event)
-	log.Println("Received event data:", event)
 
 	if err != nil {
 		log.Println(err)
 		http.Error(w, `{"error": "Invalid request body"}`, http.StatusBadRequest)
 		return
 	}
-	userID, ok := r.Context().Value("userId").(int64)
+	userID, ok := r.Context().Value(UserIDKey).(int64)
 	if !ok {
-		http.Error(w, `{"message": "Unauthorized: invalid user ID."}`, http.StatusUnauthorized)
+		http.Error(w, `{"message": "Unauthorized: invalid user"}`, http.StatusUnauthorized)
 		return
 	}
 	event.UserID = userID
@@ -102,7 +91,7 @@ func (app *application) updateEvent (w http.ResponseWriter, r *http.Request) {
         return
     }
 
-	userID, ok := r.Context().Value("userId").(int64)
+	userID, ok := r.Context().Value(UserIDKey).(int64)
 	if !ok {
 		http.Error(w, `{"message": "Unauthorized: invalid user ID."}`, http.StatusUnauthorized)
 		return
@@ -148,7 +137,7 @@ func (app *application) deleteEvent (w http.ResponseWriter, r *http.Request) {
         return
     }
 
-	userID, ok := r.Context().Value("userId").(int64)
+	userID, ok := r.Context().Value(UserIDKey).(int64)
 	if !ok {
 		http.Error(w, `{"message": "Unauthorized: invalid user ID."}`, http.StatusUnauthorized)
 		return
@@ -162,7 +151,7 @@ func (app *application) deleteEvent (w http.ResponseWriter, r *http.Request) {
 	}
 
 	if event.UserID != userID {
-		http.Error(w, "Not authorized to delete event.", http.StatusUnauthorized)
+		http.Error(w, `{"message": "Not authorized to delete event."}`, http.StatusUnauthorized)
         return
 	}
 
@@ -172,5 +161,5 @@ func (app *application) deleteEvent (w http.ResponseWriter, r *http.Request) {
 		http.Error(w, `{"error": "Could not delete event"}`, http.StatusInternalServerError)
 		return
 	}
-	JsonResponse(w, http.StatusOK, "The Event deleted successfully", event)
+	JsonResponse(w, http.StatusOK, "The Event deleted successfully", nil)
 }

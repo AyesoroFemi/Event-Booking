@@ -1,0 +1,10 @@
+POST http://localhost:8080/event
+content-type: application/json
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJleHAiOjE3NDAwMjczMDIsInVzZXJJZCI6Mn0.vSV_WvzQkCi9EEd6lEkzHudJxttVXJsqqjD6ZJX0Jkw
+
+{
+  "name": "Golang programming language",
+  "description": "Los Angeles USA",
+  "location": "A test location",
+  "dateTime": "2025-01-01T15:30:00.000Z"
+}

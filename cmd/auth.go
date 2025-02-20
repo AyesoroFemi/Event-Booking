@@ -25,7 +25,7 @@ func Authenticate(next http.Handler) http.Handler {
 		// Ensure the format is "Bearer <token>"
 		parts := strings.Split(authHeader, " ")
 		if len(parts) != 2 || parts[0] != "Bearer" {
-			http.Error(w, `{"message": "Not authorized."}`, http.StatusUnauthorized)
+			http.Error(w, `{"message": "Not authorized. where is it coming from??"}`, http.StatusUnauthorized)
 			return
 		}
 

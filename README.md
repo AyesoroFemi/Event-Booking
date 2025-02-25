@@ -1,6 +1,7 @@
 Event Booking App - API Overview
 Introduction
-The Event Booking App is a web-based platform that allows users to create, manage, and register for events. It provides a seamless experience for both event organizers and participants, enabling efficient event management and user engagement.
+The Event Booking App is a web-based platform that allows users to create, manage, and register for events. 
+It provides a seamless experience for both event organizers and participants, enabling efficient event management and user engagement.
 
 Key Features
 User Authentication → Secure signup and login system.

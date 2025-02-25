@@ -1,14 +1,14 @@
 ## Event Booking App - API Overview
 **Introduction**
-# The Event Booking App is a web-based platform that allows users to create, manage, and register for events. 
-# It provides a seamless experience for both event organizers and participants, enabling efficient event management and user engagement.
+ The Event Booking App is a web-based platform that allows users to create, manage, and register for events. 
+ It provides a seamless experience for both event organizers and participants, enabling efficient event management and user engagement.
 
 **Key Features**
-# User Authentication → Secure signup and login system.
-# Event Management → Users can create, update, and delete events.
-# Event Registration → Users can register and cancel their registration for events.
-# Access Control → Only authenticated users can create, edit, or register for events.
-# CORS Handling → Supports secure API access for both web and mobile applications.
+ User Authentication → Secure signup and login system.
+ Event Management → Users can create, update, and delete events.
+ Event Registration → Users can register and cancel their registration for events.
+ Access Control → Only authenticated users can create, edit, or register for events.
+ CORS Handling → Supports secure API access for both web and mobile applications.
 
 **API Endpoints & Functionality**
 1. Health Check

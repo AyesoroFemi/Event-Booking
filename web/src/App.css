@@ -1,0 +1,58 @@
+.event__card {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+
+}
+
+.card {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
+}
+
+input[type="text"], input[type="password"] {
+  width: 200px;
+  outline: none;
+  border: 1px solid black;
+  padding-left: 4px;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.event__btn {
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  border: none;
+  padding: 6px 16px;
+  background-color: burlywood;
+  cursor: pointer;
+}
+
+.tab{
+  display: flex;
+  gap: 20px;
+  margin-top: 50px;
+}
+
+.tab div{
+  border: 1px solid black;
+  padding: 4px 20px;
+  cursor: pointer;
+}
+
+.nav {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+a{
+  text-decoration: none;
+  color: black;
+ }
+ .nav div > a {
+  margin-right: 12px;
+  cursor: pointer;
+ }

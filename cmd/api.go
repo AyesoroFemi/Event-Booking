@@ -40,7 +40,7 @@ func (app *application) mount() http.Handler {
 		r.Get("/", HealthHandler)
 	})
 
-	r.Route("/event", func(r chi.Router) {
+	r.Route("/events", func(r chi.Router) {
 		r.Get("/", app.getEvents)
 		r.Get("/{id}", app.getEvent)
 

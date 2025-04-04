@@ -1,10 +1,10 @@
-POST http://localhost:8080/event
+POST http://localhost:8080/events
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJleHAiOjE3NDAwMjczMDIsInVzZXJJZCI6Mn0.vSV_WvzQkCi9EEd6lEkzHudJxttVXJsqqjD6ZJX0Jkw
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QyQGV4YW1wbGUuY29tIiwiZXhwIjoxNzQzNzk1ODczLCJ1c2VySWQiOjJ9.RcSpOaUtdC50K_ljE6zfoLEi0Cy4F1AfEuv_mBV4KcE
 
 {
-  "name": "Golang programming language",
-  "description": "Los Angeles USA",
-  "location": "A test location",
+  "name": "Javascript conference",
+  "description": "Be at miss or each good play home they. It leave taste mr in it fancy. She son lose does fond bred gave lady get. Sir her company conduct expense bed any. Sister depend change off piqued one. Contented continued any happiness instantly objection yet her allowance. Use correct day new brought tedious. By come this been in. Kept easy or sons my it done.",
+  "location": "San Francisco",
   "dateTime": "2025-01-01T15:30:00.000Z"
 }

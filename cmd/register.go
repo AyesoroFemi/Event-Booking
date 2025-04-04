@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -57,7 +56,6 @@ func (app *application) SignUp(w http.ResponseWriter, r *http.Request) {
 	var user model.User
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
-		log.Println(err)
 		http.Error(w, `{"error": "Invalid request body"}`, http.StatusBadRequest)
 		return
 	}
@@ -75,14 +73,12 @@ func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 	var user model.User
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
-		log.Println(err)
 		http.Error(w, `{"error": "Invalid request body"}`, http.StatusBadRequest)
 		return
 	}
 	
 	err = app.store.Users.ValidateCredentials(&user)
 	if err != nil {
-		log.Println(err)
 		http.Error(w, `{"error": "Could not authenticate user."}`, http.StatusUnauthorized)
 		return
 	}

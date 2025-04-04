@@ -28,7 +28,7 @@ function Home() {
               </Link>
             )
           })}
-        </div> : <h1>No task added yet</h1>}
+        </div> : <h1>No event added yet</h1>}
     </div>
   )
 }

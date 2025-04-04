@@ -62,8 +62,9 @@ func (app *application) createEvent(w http.ResponseWriter, r *http.Request) {
 	var event model.Event
 	err := json.NewDecoder(r.Body).Decode(&event)
 
+	defer r.Body.Close()
+
 	if err != nil {
-		log.Println(err)
 		http.Error(w, `{"error": "Invalid request body"}`, http.StatusBadRequest)
 		return
 	}
@@ -72,6 +73,7 @@ func (app *application) createEvent(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, `{"message": "Unauthorized: invalid user"}`, http.StatusUnauthorized)
 		return
 	}
+	
 	event.UserID = userID
 
 	if err := app.store.Events.SaveEvent(&event); err != nil {

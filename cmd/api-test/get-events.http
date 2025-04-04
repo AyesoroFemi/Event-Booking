@@ -1,1 +1,1 @@
-GET http://localhost:8080/event
+GET http://localhost:8080/events

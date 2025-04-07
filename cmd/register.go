@@ -19,7 +19,7 @@ type APIResponseData struct {
 
 func (app *application) RegisterForEvent(w http.ResponseWriter, r *http.Request) {
 
-	userID, ok := r.Context().Value("userId").(int64)
+	userID, ok := r.Context().Value(UserIDKey).(int64)
 	if !ok {
 		http.Error(w, `{"message": "Unauthorized: invalid user ID."}`, http.StatusUnauthorized)
 		return
@@ -32,14 +32,13 @@ func (app *application) RegisterForEvent(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
+	event, err := app.store.Events.GetEventById(eventID)
+	if err != nil {
+		http.Error(w, `{"message": "Could not fetch events."}`, http.StatusInternalServerError)
+		return
+	}
 
-	// event, err := app.store.Events.GetEventById(eventID)
-	// if err != nil {
-	// 	http.Error(w, `{"message": "Could not fetch events."}`, http.StatusInternalServerError)
-	// 	return
-	// }
-
-	err = app.store.Users.Register(&model.User{ID: userID}, eventID)
+	err = app.store.Users.Register(&model.User{ID: userID}, event.ID)
 	if err != nil {
 		http.Error(w, `{"message": "Could not register user for event."}`, http.StatusInternalServerError)
 		return
@@ -100,37 +99,8 @@ func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 }
 
 
-// func (app *application) CancelRegistration(w http.ResponseWriter, r *http.Request) {
-// 	userID, ok := r.Context().Value("userId").(int64)
-// 	if !ok {
-// 		http.Error(w, `{"message": "Unauthorized: invalid user ID."}`, http.StatusUnauthorized)
-// 		return
-// 	}
-
-// 	eventIDStr := chi.URLParam(r, "id")
-// 	eventID, err := strconv.ParseInt(eventIDStr, 10, 64)
-// 	if err != nil {
-// 		http.Error(w, `{"message": "Could not parse event ID."}`, http.StatusBadRequest)
-// 		return
-// 	}
-
-// 	var event model.Event
-// 	event.ID = eventID
-
-// 	var user model.User
-// 	err = json.NewDecoder(r.Body).Decode(&user)
-// 	err = app.store.Users.CancelRegistration(user, userID)
-
-// 	if err != nil {
-// 		http.Error(w, `{"message": "Could not authenticate user."}`, http.StatusInternalServerError)
-// 		return
-// 	}
-// 	JsonResponse(w, http.StatusOK, "Cancelled", nil)
-
-// }
-
 func (app *application) CancelRegistration(w http.ResponseWriter, r *http.Request) {
-	userID, ok := r.Context().Value("userId").(int64)
+	userID, ok := r.Context().Value(UserIDKey).(int64)
 	if !ok {
 		http.Error(w, `{"message": "Unauthorized: invalid user ID."}`, http.StatusUnauthorized)
 		return

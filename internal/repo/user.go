@@ -70,7 +70,7 @@ func (u *UserStore) ValidateCredentials(user *model.User) error {
 	return nil
 }
 
-func (u *UserStore) Register(user *model.User, userId int64) error {
+func (u *UserStore) Register(user *model.User, eventId int64) error {
 	query := "INSERT INTO registrations(event_id, user_id) VALUES (?, ?)"
 	stmt, err := u.db.Prepare(query)
 
@@ -80,7 +80,7 @@ func (u *UserStore) Register(user *model.User, userId int64) error {
 
 	defer stmt.Close()
 
-	_, err = stmt.Exec(userId, user.ID)
+	_, err = stmt.Exec(eventId, user.ID)
 
 	if err != nil {
 		return err
@@ -108,32 +108,4 @@ func (u *UserStore) CancelRegistration(userID, eventID int64) error {
 	return nil
 }
 
-
-// func (u *UserStore) CancelRegistration(userID, eventID int64) error {
-//     query := "DELETE FROM registrations WHERE event_id = ? AND user_id = ?"
-//     stmt, err := u.db.Prepare(query)
-//     if err != nil {
-//         return fmt.Errorf("failed to prepare statement: %w", err)
-//     }
-//     defer func() {
-//         if cerr := stmt.Close(); cerr != nil {
-//             log.Printf("failed to close statement: %v", cerr)
-//         }
-//     }()
-
-//     res, err := stmt.Exec(eventID, userID)
-//     if err != nil {
-//         return fmt.Errorf("failed to execute DELETE statement: %w", err)
-//     }
-
-//     rowsAffected, err := res.RowsAffected()
-//     if err != nil {
-//         return fmt.Errorf("failed to retrieve affected rows: %w", err)
-//     }
-//     if rowsAffected == 0 {
-//         return fmt.Errorf("no registration found for event_id %d and user_id %d", eventID, userID)
-//     }
-
-//     return nil
-// }
 

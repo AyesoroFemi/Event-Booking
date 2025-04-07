@@ -100,3 +100,11 @@ srv := &http.Server{
 	ReadTimeout:  time.Second * 10,
 	IdleTimeout:  time.Minute,
 }
+
+
+# Clone the repo
+git clone https://github.com/your-username/event-booking.git
+cd event-booking
+
+# Run the application
+go run ./cmd

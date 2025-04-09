@@ -87,7 +87,6 @@ func (app *application) Login(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, `{"message": "Could not authenticate user."}`, http.StatusInternalServerError)
 		return
 	}
-	// JsonResponse(w, http.StatusOK, "Login successfully", token)
 	w.Header().Set("Content-Type", "Application/Json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(APIResponseData{

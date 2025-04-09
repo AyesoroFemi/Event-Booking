@@ -2,8 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	// "fmt"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -23,7 +21,6 @@ func HealthHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := json.NewEncoder(w).Encode(payload); err != nil {
-		log.Println("Error encoding JSON:", err)
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
@@ -32,7 +29,6 @@ func HealthHandler(w http.ResponseWriter, r *http.Request) {
 func (app *application) getEvents(w http.ResponseWriter, r *http.Request) {
 	events, err := app.store.Events.GetAllEvents()
 	if err != nil {
-		log.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -50,7 +46,6 @@ func (app *application) getEvent(w http.ResponseWriter, r *http.Request) {
 
 	event, err := app.store.Events.GetEventById(userID)
 	if err != nil {
-		log.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -101,7 +96,6 @@ func (app *application) updateEvent (w http.ResponseWriter, r *http.Request) {
 	
 	event, err := app.store.Events.GetEventById(EventId)
 	if err != nil {
-		log.Println(err)
 		http.Error(w, `{"message": "Could not retrieve event."}`, http.StatusInternalServerError)
 		return
 	}
@@ -114,7 +108,6 @@ func (app *application) updateEvent (w http.ResponseWriter, r *http.Request) {
 	var updatedEvent model.Event
 	err = json.NewDecoder(r.Body).Decode(&updatedEvent)
 	if err != nil {
-		log.Println(err)
 		http.Error(w, `{"error": "Could not parse request data"}`, http.StatusBadRequest)
 		return
 	}
@@ -122,7 +115,6 @@ func (app *application) updateEvent (w http.ResponseWriter, r *http.Request) {
 	updatedEvent.ID = EventId
 	err = app.store.Events.UpdateEvent(updatedEvent)
 	if err != nil {
-		log.Println(err)
 		http.Error(w, `{"error": "Could not update event"}`, http.StatusInternalServerError)
 		return
 	}
@@ -147,7 +139,6 @@ func (app *application) deleteEvent (w http.ResponseWriter, r *http.Request) {
 	
 	event, err := app.store.Events.GetEventById(EventId)
 	if err != nil {
-		log.Println(err)
 		http.Error(w, `{"message": "Could not retrieve event."}`, http.StatusInternalServerError)
 		return
 	}
@@ -159,7 +150,6 @@ func (app *application) deleteEvent (w http.ResponseWriter, r *http.Request) {
 
 	err = app.store.Events.DeleteEvent(*event)
 	if err != nil {
-		log.Println(err)
 		http.Error(w, `{"error": "Could not delete event"}`, http.StatusInternalServerError)
 		return
 	}

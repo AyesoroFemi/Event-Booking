@@ -6,7 +6,8 @@ import Home from './pages/Home';
 import Signup from './pages/Signup';
 import SingleEvent from './pages/SingleEvent';
 import Dashboard from './pages/Dashboard';
-import ProtectedRoute from './AuthHook';
+import ProtectedRoute from './AuthContext';
+import CreateEvent from './pages/CreateEvent';
 
 function App() {
 
@@ -24,14 +25,21 @@ function App() {
           element: <SingleEvent />,
         },
         {
+          path: "/signup",
+          element: <Signup />
+        },
+        {
           path: "/dashboard",
           element: <ProtectedRoute>
             <Dashboard />
           </ProtectedRoute>
         },
         {
-          path: "/signup",
-          element: <Signup />
+          path: "/create",
+          element: <ProtectedRoute>
+            <CreateEvent />
+          </ProtectedRoute>
+
         }
       ],
     },

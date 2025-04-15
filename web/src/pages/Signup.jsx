@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router'
+import { useAuth } from '../AuthContext'
 
 // const baseUrl = "http://localhost:8080/signup"
 
@@ -7,10 +8,12 @@ function Signup() {
 
     const [userEmail, setUserEmail] = useState("")
     const [userPassword, setUserPassword] = useState("")
-    const [step, setStep] = useState(0)
+    const [step, setStep] = useState(1)
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+
+    const { isAuthenticated, login } = useAuth()
 
     const navigate = useNavigate()
 
@@ -35,7 +38,7 @@ function Signup() {
 
         const data = await res.json()
         if (data.token) {
-            localStorage.setItem("eventToken", data.token)
+            login(data.token)
             navigate("/dashboard")
         }
         // console.log(data.token)
@@ -44,53 +47,59 @@ function Signup() {
     const handleSignup = (e) => {
         e.preventDefault()
         onSignup(email, password)
-        navigate("/")
+        navigate("/signup")
     }
 
 
-    const handleLogin = (e) => {
+    const handleLogin =(e) => {
         e.preventDefault()
         const body = {
             email: userEmail,
             password: userPassword
         }
         onLogin(body)
-        navigate("/")
     }
 
     return (
-        <div className='signup'>
-            <div className='tab'>
-                <div onClick={() => setStep(0)}>Sign Up</div>
-                <div onClick={() => setStep(1)}>Login </div>
-            </div>
-            {step === 0 && <form onSubmit={handleSignup}>
-                <h1>Sign up into the event booking...</h1>
-                <div>
-                    <label htmlFor="email">Email</label>
-                    <input name='email' value={email} onChange={(e) => setEmail(e.target.value)} type="text" />
-                </div>
-                <div>
-                    <label htmlFor="">Password</label>
-                    <input onChange={(e) => setPassword(e.target.value)} value={password} type="password" />
-                </div>
-                <button type='submit'>Submit</button>
-            </form>}
-
-            {step === 1 && <div>
-                <h1>Login into the event booking...</h1>
-                <form onSubmit={handleLogin}>
+        <div className='wrapper'>
+            <div className='signup register__container'>
+                {step === 0 && <form onSubmit={handleSignup}>
+                    <h1 className='title'>Account Sign up</h1>
                     <div>
                         <label htmlFor="email">Email</label>
-                        <input name='email' value={userEmail} onChange={(e) => setUserEmail(e.target.value)} type="text" />
+                        <input name='email' required value={email} onChange={(e) => setEmail(e.target.value)} type="text" />
                     </div>
                     <div>
                         <label htmlFor="">Password</label>
-                        <input onChange={(e) => setUserPassword(e.target.value)} value={userPassword} type="password" />
+                        <input onChange={(e) => setPassword(e.target.value)} value={password} type="password" />
                     </div>
-                    <button type='submit'>Submit</button>
-                </form>
-            </div>}
+                    <input type='submit' value="Sign up" />
+                </form>}
+
+                {step === 1 && <div>
+                    <h1 className='title'>Account Login</h1>
+                    <form onSubmit={handleLogin}>
+                        <div>
+                            <label htmlFor="email">Email</label>
+                            <input name='email' value={userEmail} onChange={(e) => setUserEmail(e.target.value)} type="text" />
+                        </div>
+                        <div>
+                            <label htmlFor="">Password</label>
+                            <input onChange={(e) => setUserPassword(e.target.value)} value={userPassword} type="password" />
+                        </div>
+                        <input type='submit' value="Login" />
+                    </form>
+                </div>}
+                <div>
+                    {step === 0 ? <div className='account__login' onClick={() => setStep(1)}>Already have an account? <span> Login</span></div> :
+                        <div className='signup__container'>
+                            <p>If you are a new, register below 👇</p>
+                            <div className='signup__btn' onClick={() => setStep(0)}>Create new account</div>
+                        </div>
+                    }
+                    {/* <div onClick={() => setStep(1)}>Do you have parent account? Login </div> */}
+                </div>
+            </div>
         </div>
     )
 }

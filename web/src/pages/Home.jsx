@@ -1,34 +1,32 @@
 import React, { useEffect, useState } from 'react'
-import { formatDateTime } from '../utils/date'
 import { Link } from 'react-router'
+import Footer from '../components/Footer'
+import EventsListing from '../components/EventsListing'
 
 function Home() {
-    const [events, setEvents] = useState([])
+  const [events, setEvents] = useState([])
 
-    const fetchEvents = async () => {
-        const response = await fetch("http://localhost:8080/events")
-        const data = await response.json()
-        setEvents(data.data)
-    }
+  const fetchEvents = async () => {
+    const response = await fetch("http://localhost:8080/events")
+    const data = await response.json()
+    setEvents(data.data)
+  }
 
-    useEffect(() => {
-        fetchEvents()
-    }, [])
+  useEffect(() => {
+    fetchEvents()
+  }, [])
 
 
   return (
-    <div>
-        {events?.length > 0 ? <div className='event__card'>
-          {events?.map((event) => {
-            return (
-              <Link to={`/${event.id}`} className='card' key={event.id}>
-               <h3>{event.name}</h3>
-               <p>{event.description}</p>
-               <p>{formatDateTime(event.datetime)}</p>
-              </Link>
-            )
-          })}
-        </div> : <h1>No event added yet</h1>}
+    <div className="wrapper">
+      <div className='hero'>
+        <h1>Event Management App</h1>
+        <Link to="/signup">
+          Get Started
+        </Link>
+      </div>
+      <EventsListing events={events}/>
+      <Footer/>
     </div>
   )
 }

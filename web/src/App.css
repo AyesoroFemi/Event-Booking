@@ -1,52 +1,162 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+.hero {
+  background-image:linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)), url("https://plus.unsplash.com/premium_photo-1661882403999-46081e67c401?q=80&w=2929&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  background-size: cover;
+  background-position: center;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.hero h1 {
+  font-size: 48px;
+}
+
+.hero a {
+  margin-top: 16px;
+  text-decoration: none;
+  color: #000;
+  background-color: #fff;
+  padding: 12px 40px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
 .event__card {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-
+  gap: 32px;
+  margin-top: 50px;
 }
+
+
 
 .card {
-  text-decoration: none;
+  /* text-decoration: none;
   color: black;
-  cursor: pointer;
+  cursor: pointer; */
+  /* border: 3px solid red; */
+  border-radius: 8px;
+  box-shadow: 1px 1px 5px rgb(240, 238, 238);
 }
 
-input[type="text"], input[type="password"] {
+.card:hover {
+  border: 1px solid black;
+  height: 100%;
+
+}
+
+.event__calendar {
+  background-color: oklch(83.7% 0.128 66.29);
+  padding-top: 12px;
+  padding-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-top-right-radius: 6px;
+  border-top-left-radius: 6px;
+  padding-left: 20px;
+}
+
+.event__calendar p {
+  font-size: 18px;
+  font-weight:600;
+}
+
+.card h3 {
+  /* font-size: px; */
+  padding: 20px;
+}
+
+.event__description {
+  padding-left: 24px;
+  padding-bottom: 20px;
+  padding-right: 24px;
+}
+
+
+/* Single events styles */
+
+.event__btn {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  /* border: 4px solid red; */
+}
+
+.previous__page {
+  border: 1px solid black;
+  display: inline;
+  padding: 5px 10px;
+  margin-top: 10px;
+
+}
+
+.event__list {
+  margin-top: 30px;
+}
+
+.event__btn button {
+  padding: 10px 20px;
+  border-radius: 4px;
+  background-color: #000;
+  color: #fff;
+  font-size: 16px;
+}
+
+
+.event__card .btn {
+ padding-left: 20px;
+ color: oklch(48.8% 0.243 264.376);
+ font-size: 16px;
+
+}
+
+/* input[type="text"], input[type="password"] {
   width: 200px;
   outline: none;
   border: 1px solid black;
   padding-left: 4px;
   display: block;
   margin-bottom: 10px;
-}
-
-.event__btn {
-  display: flex;
-  gap: 10px;
-}
+} */
 
 button {
   border: none;
-  padding: 6px 16px;
-  background-color: burlywood;
+  /* padding: 6px 16px; */
   cursor: pointer;
+  background-color: transparent;
 }
 
-.tab{
+/* .tab{
   display: flex;
   gap: 20px;
   margin-top: 50px;
-}
+} */
 
-.tab div{
-  border: 1px solid black;
-  padding: 4px 20px;
-  cursor: pointer;
-}
+
 
 .nav {
   display: flex;
   gap: 20px;
   justify-content: space-between;
+  padding-top: 16px;
+  padding-bottom: 16px;
 }
 a{
   text-decoration: none;
@@ -56,3 +166,153 @@ a{
   margin-right: 12px;
   cursor: pointer;
  }
+
+
+ .event__link {
+  margin-top: 16px;
+  margin-bottom: 24px;
+  display: flex;
+  gap: 3px;
+  align-items: center;
+ }
+
+ .footer {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  display: flex;
+  justify-content: center;
+ }
+
+ .wrapper {
+  /* background-color: #000; */
+ }
+
+ .register__container {
+  margin-top: 100px;
+  height: 100%;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 8px;
+  box-shadow: 1px 1px 5px rgb(240, 238, 238);
+  padding: 50px;
+ }
+
+.signup .title {
+  text-align: center;
+  font-weight: 500;
+}
+
+input[type="text"], input[type="password"] {
+  width: 100%;
+  outline: none;
+  border: 1px solid rgb(212, 204, 204);
+  padding: 10px 10px;
+  display: block;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  
+}
+
+input[type="submit"] {
+  width: 100%;
+  outline: none;
+  border: none;
+  padding: 12px 10px;
+  display: block;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  background-color: #000;
+  font-size: 16px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.signup__container {
+  margin-top: 24px;
+}
+.signup__container p{
+  text-align: center;
+
+} 
+.signup__btn{
+  border: 1px solid black;
+  padding: 10px 20px;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.account__login {
+  text-align: center;
+}
+
+.account__login span {
+  color: oklch(48.8% 0.243 264.376);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.logout{
+  font-size: 16px;
+}
+
+/* Dashboard page */
+.dashboard__events {
+  margin-top: 50px;
+}
+
+.dashboard__card {
+  margin: 24px 0
+}
+
+/* Create events */
+
+.create__event {
+  margin-top: 50px;
+  height: 100%;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 8px;
+  box-shadow: 1px 1px 5px rgb(240, 238, 238);
+  padding: 50px;
+ }
+textarea {
+  border-radius: 4px;
+  width: 100%;
+  outline: none;
+  border: 1px solid rgb(212, 204, 204);
+  padding: 10px;
+}
+
+
+
+
+
+@media screen and (max-width: 968px) {
+  .event__card {
+    grid-template-columns: 1fr 1fr;
+  }
+  /* .event__calendar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .event__calendar p {
+    font-size: 16px;
+  }
+  .event__description {
+    padding-left: 16px;
+    padding-right: 16px;
+  } */
+  
+}
+
+@media screen and (max-width: 668px) {
+  .event__card {
+    grid-template-columns: 1fr;
+  }
+
+}

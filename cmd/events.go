@@ -27,12 +27,31 @@ func HealthHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) getEvents(w http.ResponseWriter, r *http.Request) {
+	// Check if the userId query parameter is present
+	userIdStr := r.URL.Query().Get("createdBy")
+	if userIdStr != "" {
+		userId, err := strconv.ParseInt(userIdStr, 10, 64)
+        if err != nil {
+            http.Error(w, `{"message": "Invalid user ID format"}`, http.StatusBadRequest)
+            return
+        }
+
+		events, err := app.store.Events.GetEventsByUserId(userId)
+		if err != nil {
+			http.Error(w, `{"message": "Could not fetch events"}`, http.StatusInternalServerError)
+			return 
+		}
+		JsonResponse(w, http.StatusOK, "Events retrieved successfully", events)
+		return
+	}
+
+	// If the userId query parameter is not present, fetch all events
+	// and return them
 	events, err := app.store.Events.GetAllEvents()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-
 	JsonResponse(w, http.StatusOK, "Events retrieved successfully", events)
 }
 

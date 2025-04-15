@@ -13,6 +13,7 @@ type Storage struct {
 		GetEventById(id int64) (*model.Event, error)
 		UpdateEvent(event model.Event) error 
 		DeleteEvent(event model.Event) error
+		GetEventsByUserId(userId int64) ([]model.Event, error)
 	}
 	Users interface {
 		SaveUser(user *model.User) error

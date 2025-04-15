@@ -126,3 +126,26 @@ func (e *EventStore) DeleteEvent(event model.Event) error {
 	
 	return nil
 }
+
+
+func (e *EventStore) GetEventsByUserId(userId int64) ([]model.Event, error) {
+	query := "SELECT * FROM events WHERE user_id = ?"
+	rows, err := e.db.Query(query, userId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var events []model.Event
+	for rows.Next() {
+		var event model.Event
+		err := rows.Scan(&event.ID, &event.Name, &event.Description, &event.Location, &event.DateTime, &event.UserID)
+		if err != nil {
+			return nil, err
+		}
+		events = append(events, event)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return events, nil
+}

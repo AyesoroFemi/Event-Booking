@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useAuth } from '../AuthContext'
+import { toast } from "react-toastify";
 
 // const baseUrl = "http://localhost:8080/signup"
 
@@ -13,7 +14,7 @@ function Signup() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    const { isAuthenticated, login } = useAuth()
+    const { login } = useAuth()
 
     const navigate = useNavigate()
 
@@ -28,18 +29,32 @@ function Signup() {
     }
 
     const onLogin = async (body) => {
-        const res = await fetch("http://localhost:8080/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(body)
-        })
+        try { 
+            const res = await fetch("http://localhost:8080/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body)
+            })
 
-        const data = await res.json()
-        if (data.token) {
-            login(data.token)
-            navigate("/dashboard")
+            if (!res.ok) {
+                const errorData = await res.json(); // Parse the error response
+                console.error("Login failed:", errorData.message || "Unknown error");
+                toast.error(errorData.message || "Invalid email or password");
+                return; // Exit the function
+            }
+    
+            const data = await res.json()
+            if (data.token) {
+                login(data.token)
+                toast.success("Login successful")
+                navigate("/dashboard")
+            }
+
+        } catch(error) {
+            console.log("Error logging in", error)
+            toast.error("An error occurred while logging in. Please try again.")
         }
         // console.log(data.token)
     }

@@ -8,6 +8,15 @@ import SingleEvent from './pages/SingleEvent';
 import Dashboard from './pages/Dashboard';
 import ProtectedRoute from './AuthContext';
 import CreateEvent from './pages/CreateEvent';
+import EditEvent from './pages/EditEvent';
+
+const originalConsoleInfo = console.info;
+console.info = (...args) => {
+  if (args[0]?.includes("tracking/RPC")) {
+    return; // Suppress the specific log
+  }
+  originalConsoleInfo(...args); // Allow other logs
+};
 
 function App() {
 
@@ -39,8 +48,13 @@ function App() {
           element: <ProtectedRoute>
             <CreateEvent />
           </ProtectedRoute>
-
-        }
+        },
+        {
+          path: "/event/:id",
+          element: <ProtectedRoute>
+            <EditEvent />
+          </ProtectedRoute>,
+        },
       ],
     },
     // {

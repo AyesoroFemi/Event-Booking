@@ -1,7 +1,9 @@
 import { jwtDecode } from "jwt-decode";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { formatDateTime } from '../utils/date'
+import { toast } from "react-toastify";
+
 
 function Dashboard() {
   const [events, setEvents] = useState([])
@@ -9,7 +11,6 @@ function Dashboard() {
   const [userEmail, setUserEmail] = useState(null)
 
   const navigate = useNavigate();
-
 
   useEffect(() => {
     const token = localStorage.getItem("eventToken")
@@ -41,22 +42,59 @@ function Dashboard() {
     } 
   }, [userId])
 
+  const deleteEvent = async (id) => {
+    const token = localStorage.getItem("eventToken")
+
+    try {
+      const res = await fetch(`http://localhost:8080/events/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+      })
+      
+      if (!res.ok) {
+        const errorData = await res.json(); // Parse error response
+        console.error("Full server error:", errorData);
+        toast.error(errorData.message || "Could not delete the event!");
+        return; 
+      }
+
+      toast.success("Event deleted successfully!");
+      setEvents((prevEvents) => prevEvents.filter((event) => event.id !== id));
+    } catch (error) {
+      toast.error("Could not be deleted!!")        
+    }
+
+  }
+
+  const handleDelete = (eventId) => {
+    const confirm = window.confirm("Are you sure you want to delete this event")
+    if (!confirm) return
+    deleteEvent(eventId)
+  }
+
+
   return (
     <div className="container">
       <h1>  Events created by {userEmail}</h1>
-      <div className="dashboard__events">
-        {events.map((event) => (
-          <div key={event.id} className="dashboard__card">
-            <p >{formatDateTime(event.datetime)}</p>
-            <h3>{event.name}</h3>
-            <p>{event.description}</p>
+      {events.length > 0 ? (
+        <div className="dashboard__events">
+          {events.map((event) => (
+            <div key={event.id} className="dashboard__card">
+              <p >{formatDateTime(event.datetime)}</p>
+              <h3>{event.name}</h3>
+              <p>{event.description}</p>
               <div className="event__btn">
-                <button onClick={() => navigate("/signup")}>Edit Event</button>
-                <button onClick={() => navigate("/signup")}>Delete Event</button>
+                {/* <Link to={`/event/${id}`}>Edit</Link> */}
+                <button onClick={() => navigate(`/event/${event.id}`)}>Edit Event</button>
+                <button onClick={() => handleDelete(event.id)}>Delete Event</button>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : <h1>No user event added yet</h1>}
     </div>
   )
 }

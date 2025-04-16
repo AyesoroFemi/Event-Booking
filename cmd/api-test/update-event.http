@@ -1,9 +1,9 @@
-PUT http://localhost:8080/events/1
+PUT http://localhost:8080/events/5
 content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxMEBleGFtcGxlLmNvbSIsImV4cCI6MTc0MTEwMzM3OSwidXNlcklkIjoxfQ.zmS6ofGiAhccNbRjgYCJXDeJ3cBGcgKOOb-28EjMoGQ
+authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QxQGV4YW1wbGUuY29tIiwiZXhwIjoxNzQ0ODE4NDgzLCJ1c2VySWQiOjF9.dOnWP3i0VKYlhA4KzvAtpHuy612e-6wamK_k2InKiVs
 
 {
-  "name": "Web development programming",
+  "name": "Web CEO",
   "description": "Placing assured be if removed it besides on. Far shed each high read are men over day. Afraid we praise lively he suffer family estate is. Ample order up in of in ready. Timed blind had now those ought set often which. Or snug dull he show more true wish. No at many deny away miss evil. On in so indeed spirit an mother. Amounted old strictly but marianne admitted. People former is remove remain as.",
   "location": "Lagos, Nigeria",
   "dateTime": "2025-03-01T15:30:00Z"

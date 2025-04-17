@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import { baseURL } from "../utils/api";
 
 
 function CreateEvent() {
@@ -14,7 +15,7 @@ function CreateEvent() {
         const token = localStorage.getItem("eventToken")
 
         try {
-            const res = await fetch("http://localhost:8080/events", {
+            const res = await fetch(`${baseURL}/events`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -41,7 +42,6 @@ function CreateEvent() {
     const handleSubmit = (e) => {
         e.preventDefault()
         if (!name || !description || !location) {
-            setError("Please fill in all fields.")
             return;
         }
         const newEvent = {
@@ -82,5 +82,3 @@ function CreateEvent() {
 }
 
 export default CreateEvent
-
-

@@ -4,9 +4,8 @@ const LogoutButton = ({ logout }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout(); // Call the logout function passed as a prop
-    // localStorage.removeItem("eventToken"); // Clear the token
-    navigate("/signup"); // Redirect to signup page
+    logout();
+    navigate("/signup"); 
   };
 
   return <button className="logout" onClick={handleLogout}>Logout</button>;

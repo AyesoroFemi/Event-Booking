@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router"
 import { toast } from "react-toastify"
 import EventList from "../components/EventList"
+import { baseURL } from "../utils/api"
 
 function SingleEvent() {
     const [event, setEvent] = useState({})
@@ -12,7 +13,7 @@ function SingleEvent() {
 
     const fetchEvent = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8080/events/${id}`)
+            const response = await fetch(`${baseURL}/events/${id}`)
             if (!response.ok) {
                 throw new Error("Failed to fetch event details")
             }
@@ -38,7 +39,7 @@ function SingleEvent() {
         }
 
         try {
-            const response = await fetch(`http://localhost:8080/events/${id}/register`, {
+            const response = await fetch(`${baseURL}/events/${id}/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -70,7 +71,7 @@ function SingleEvent() {
         }
 
         try {
-            const response = await fetch(`http://localhost:8080/events/${id}/register`, {
+            const response = await fetch(`${baseURL}/events/${id}/register`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",

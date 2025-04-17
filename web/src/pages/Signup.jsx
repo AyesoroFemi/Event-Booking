@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useAuth } from '../AuthContext'
 import { toast } from "react-toastify";
-
-// const baseUrl = "http://localhost:8080/signup"
+import { baseURL } from '../utils/api';
 
 function Signup() {
 
@@ -19,18 +18,33 @@ function Signup() {
     const navigate = useNavigate()
 
     const onSignup = async (email, password) => {
-        const res = await fetch("http://localhost:8080/signup", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ email, password })
-        })
+        try {
+            const res = await fetch(`${baseURL}/signup`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email, password })
+            })
+
+            if (!res.ok) {
+                const errorData = await res.json();
+                toast.error(errorData.message || "Invalid email or password");
+                return;
+            }
+
+            const data = await res.json()
+            toast.success("New account created successfully")
+
+        } catch (error) {
+            console.log("Error logging in", error)
+            toast.error("An error occurred while signing up. Please try again.")
+        }
     }
 
     const onLogin = async (body) => {
-        try { 
-            const res = await fetch("http://localhost:8080/login", {
+        try {
+            const res = await fetch(`${baseURL}/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -39,12 +53,12 @@ function Signup() {
             })
 
             if (!res.ok) {
-                const errorData = await res.json(); // Parse the error response
-                console.error("Login failed:", errorData.message || "Unknown error");
+                const errorData = await res.json();
+                // console.error("Login failed:", errorData.message || "Unknown error");
                 toast.error(errorData.message || "Invalid email or password");
-                return; // Exit the function
+                return;
             }
-    
+
             const data = await res.json()
             if (data.token) {
                 login(data.token)
@@ -52,7 +66,7 @@ function Signup() {
                 navigate("/dashboard")
             }
 
-        } catch(error) {
+        } catch (error) {
             console.log("Error logging in", error)
             toast.error("An error occurred while logging in. Please try again.")
         }
@@ -63,10 +77,12 @@ function Signup() {
         e.preventDefault()
         onSignup(email, password)
         navigate("/signup")
+        setEmail("")
+        setPassword("")
     }
 
 
-    const handleLogin =(e) => {
+    const handleLogin = (e) => {
         e.preventDefault()
         const body = {
             email: userEmail,
@@ -112,7 +128,6 @@ function Signup() {
                             <div className='signup__btn' onClick={() => setStep(0)}>Create new account</div>
                         </div>
                     }
-                    {/* <div onClick={() => setStep(1)}>Do you have parent account? Login </div> */}
                 </div>
             </div>
         </div>

@@ -1,8 +1,9 @@
 import { jwtDecode } from "jwt-decode";
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { formatDateTime } from '../utils/date'
 import { toast } from "react-toastify";
+import { baseURL } from "../utils/api";
 
 
 function Dashboard() {
@@ -31,7 +32,7 @@ function Dashboard() {
     if (userId) {
       const fetchEvents = async () => {
         try {
-          const res = await fetch(`http://localhost:8080/events?createdBy=${userId}`)
+          const res = await fetch(`${baseURL}/events?createdBy=${userId}`)
           const data = await res.json()
           setEvents(data.data)
         } catch (error) {
@@ -46,7 +47,7 @@ function Dashboard() {
     const token = localStorage.getItem("eventToken")
 
     try {
-      const res = await fetch(`http://localhost:8080/events/${id}`, {
+      const res = await fetch(`${baseURL}/events/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -55,7 +56,7 @@ function Dashboard() {
       })
       
       if (!res.ok) {
-        const errorData = await res.json(); // Parse error response
+        const errorData = await res.json();
         console.error("Full server error:", errorData);
         toast.error(errorData.message || "Could not delete the event!");
         return; 
@@ -79,15 +80,15 @@ function Dashboard() {
   return (
     <div className="container">
       <h1>  Events created by {userEmail}</h1>
-      {events.length > 0 ? (
+      {events?.length > 0 ? (
         <div className="dashboard__events">
           {events.map((event) => (
             <div key={event.id} className="dashboard__card">
               <p >{formatDateTime(event.datetime)}</p>
               <h3>{event.name}</h3>
               <p>{event.description}</p>
+              <p className="location">Location: {event.location}</p>
               <div className="event__btn">
-                {/* <Link to={`/event/${id}`}>Edit</Link> */}
                 <button onClick={() => navigate(`/event/${event.id}`)}>Edit Event</button>
                 <button onClick={() => handleDelete(event.id)}>Delete Event</button>
               </div>

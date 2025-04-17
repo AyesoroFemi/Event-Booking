@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router'
 import Footer from '../components/Footer'
 import EventsListing from '../components/EventsListing'
+import { baseURL } from '../utils/api'
+
 
 function Home() {
   const [events, setEvents] = useState([])
 
   const fetchEvents = async () => {
-    const response = await fetch("http://localhost:8080/events")
+    const response = await fetch(`${baseURL}/events`)
     const data = await response.json()
     setEvents(data.data)
   }
@@ -16,11 +18,10 @@ function Home() {
     fetchEvents()
   }, [])
 
-
   return (
     <div className="wrapper">
       <div className='hero'>
-        <h1>Event Management App</h1>
+        <h1>Eventos Management App</h1>
         <Link to="/signup">
           Get Started
         </Link>

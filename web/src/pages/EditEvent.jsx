@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router"
 import { toast } from "react-toastify"
+import { baseURL } from "../utils/api"
 
 function EditEvent() {
     const [name, setName] = useState("")
@@ -15,7 +16,7 @@ function EditEvent() {
 
     const fetchEvent = async (id) => {
         try {
-            const response = await fetch(`http://localhost:8080/events/${id}`)
+            const response = await fetch(`${baseURL}/events/${id}`)
             if (!response.ok) {
                 throw new Error("Failed to fetch event details")
             }
@@ -38,7 +39,7 @@ function EditEvent() {
         const token = localStorage.getItem("eventToken")
 
         try {
-            const res = await fetch(`http://localhost:8080/events/${id}`, {
+            const res = await fetch(`${baseURL}/events/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -64,7 +65,6 @@ function EditEvent() {
     const handleSubmit = async (e) => {
         e.preventDefault()
         if (!name || !description || !location) {
-            // setError("Please fill in all fields.")
             return;
         }
         const newEvent = {

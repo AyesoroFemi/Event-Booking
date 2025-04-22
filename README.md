@@ -1,4 +1,4 @@
-# 📅 Event Booking App - API Overview
+# 📅 Event Booking App - API Overview (FullStack App)
 
 ## 🧾 Introduction
 
@@ -106,5 +106,10 @@ srv := &http.Server{
 git clone https://github.com/your-username/event-booking.git
 cd event-booking
 
-# Run the application
+# Run the backend application
 go run ./cmd
+
+# Run the frontend application
+cd web
+npm install    (Go node modules)
+npm run dev    (Start the development server)
